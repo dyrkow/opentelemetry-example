@@ -1,0 +1,46 @@
+version: '3.3'
+
+services:
+  server1:
+    image: node:20
+    working_dir: /app
+    command: "npm run server1"
+    volumes:
+      - .:/app
+    ports:
+      - "3001:3001"
+  server2:
+    image: node:20
+    working_dir: /app
+    command: "npm run server2"
+    volumes:
+      - .:/app
+    ports:
+      - "3002:3002"
+  server3:
+    image: node:20
+    working_dir: /app
+    command: "npm run server3"
+    volumes:
+      - .:/app
+    ports:
+      - "3003:3003"
+
+  # https://www.jaegertracing.io/docs/1.44/getting-started/
+  # http://localhost:16686/search
+  jaeger:
+    image: jaegertracing/all-in-one:1.44
+    environment:
+      - COLLECTOR_ZIPKIN_HOST_PORT=:9411
+      - COLLECTOR_OTLP_ENABLED=true
+    ports:
+      - 6831:6831/udp
+      - 6832:6832/udp
+      - 5778:5778
+      - 16686:16686
+      - 4317:4317
+      - 4318:4318
+      - 14250:14250
+      - 14268:14268
+      - 14269:14269
+      - 9411:9411
