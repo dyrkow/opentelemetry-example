@@ -1,4 +1,5 @@
-require('./instrumentation');
+require('./instrumentation')('server1');
+
 const express = require("express");
 
 const app = express();

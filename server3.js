@@ -1,3 +1,5 @@
+require('./instrumentation')('server3');
+
 const express = require("express");
 
 const app = express();
