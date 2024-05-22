@@ -6,7 +6,7 @@ const {
   SEMRESATTRS_SERVICE_NAME,
 } = require("@opentelemetry/semantic-conventions");
 
-const { NodeTracerProvider, SimpleSpanProcessor } = require("@opentelemetry/sdk-trace-node");
+const { NodeTracerProvider, BatchSpanProcessor} = require("@opentelemetry/sdk-trace-node");
 const { registerInstrumentations } = require("@opentelemetry/instrumentation");
 const { HttpInstrumentation } = require("@opentelemetry/instrumentation-http");
 const { Resource } = require("@opentelemetry/resources");
@@ -32,7 +32,7 @@ module.exports = (serviceName) => {
     endpoint: "http://jaeger:14268/api/traces",
   });
 
-  provider.addSpanProcessor(new SimpleSpanProcessor(exporter));
+  provider.addSpanProcessor(new BatchSpanProcessor(exporter));
 
   provider.register();
 
