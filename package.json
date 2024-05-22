@@ -1,0 +1,16 @@
+{
+  "name": "opentelemetry-example",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "server1": "node server1.js",
+    "server2": "node server2.js",
+    "server3": "node server3.js"
+  },
+  "repository": "git@github.com:dyrkow/opentelemetry-example.git",
+  "author": "dyrkow <webworkdeveloper@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.19.2"
+  }
+}
