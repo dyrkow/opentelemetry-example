@@ -5,7 +5,7 @@ const app = express();
 
 app.get("/", async (req, res) => {
   console.log('Processing...');
-  const response = await fetch("http://localhost:3002/");
+  const response = await fetch("http://server2:3002/");
   const data = await response.text();
   console.log('Finish!', data);
   res.send(data);
