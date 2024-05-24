@@ -7,12 +7,14 @@ const app = express();
 
 const tracer = opentelemetry.trace.getTracer("server3", "1.0.0");
 
-app.get("/", (req, res) => {
-  const span = tracer.startSpan("main logic");
+app.get("/view", (req, res) => {
+  const ctx = opentelemetry.propagation.extract(
+    opentelemetry.context.active(),
+    req.headers
+  );
 
-  console.log("Processing...");
+  const span = tracer.startSpan("GET /view", undefined, ctx);
   setTimeout(() => {
-    console.log("Finish!");
     span.end();
     res.send("Hello World!");
   }, 3000);

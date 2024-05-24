@@ -23,10 +23,11 @@ module.exports = (serviceName) => {
     }),
   });
 
-  registerInstrumentations({
-    tracerProvider: provider,
-    instrumentations: [HttpInstrumentation, ExpressInstrumentation],
-  });
+  //  Автоматические инструменты создают какую-то фигню бесполезную в целом
+  // registerInstrumentations({
+  //   tracerProvider: provider,
+  //   instrumentations: [HttpInstrumentation, ExpressInstrumentation],
+  // });
 
   const exporter = new JaegerExporter({
     endpoint: "http://jaeger:14268/api/traces",

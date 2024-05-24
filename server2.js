@@ -7,16 +7,36 @@ const app = express();
 
 const tracer = opentelemetry.trace.getTracer("server2", "1.0.0");
 
-app.get("/", (req, res) => {
-  const span = tracer.startSpan("main logic");
+app.get("/search", (req, res) => {
+  // Получает контекст родительского спана
+  const parentContext = opentelemetry.propagation.extract(
+    opentelemetry.context.active(),
+    req.headers
+  );
 
-  console.log("Processing...");
+  // Стартуем новый спан в контексте родительского
+  const root = tracer.startSpan("GET /search", undefined, parentContext);
+
+  // Устанавливаем контекст внутри спана
+  const ctx = opentelemetry.trace.setSpan(parentContext, root);
+
+  // Добавляем в переменную данные контекста спана
+  const output = {};
+  opentelemetry.propagation.inject(ctx, output);
+
   setTimeout(async () => {
-    const response = await fetch("http://server3:3003/");
-    const data = await response.text();
-    console.log("Finish!");
+    root.end();
 
-    span.end();
+    // Делаем запрос к сервису, передавая данные текущего спана
+    const response = await fetch("http://server3:3003/view", {
+      headers: {
+        traceparent: output["traceparent"],
+        tracestate: output["tracestate"],
+      },
+    });
+
+    const data = await response.text();
+
     res.send(data);
   }, 2000);
 });
